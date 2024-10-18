@@ -55,7 +55,7 @@ class SentencesDataset(Dataset):
         return len(self.index)
 
     def __getitem__(self, idx):
-        x, lens = adapter.process(self.X[idx], self.length, self.p)
+        x, lens = self.adapter.process(self.X[idx], self.length, self.p)
         x = x.squeeze()
         return torch.cat([x, torch.tensor(lens)]), self.Y[idx]
 
