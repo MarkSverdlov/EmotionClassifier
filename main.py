@@ -33,7 +33,7 @@ class Adapter:
         if not isinstance(seqs[0], list):
             seqs = [seqs]
         array = [[self.codebook[t] for t in seq] for seq in seqs]
-        return torch.tensor(array, dtype=torch.int32)
+        return torch.tensor(array, dtype=torch.int32, device="cuda")
 
     def process(self, seqs, length, p):
         if not isinstance(seqs[0], list):
@@ -57,7 +57,7 @@ class SentencesDataset(Dataset):
     def __getitem__(self, idx):
         x, lens = self.adapter.process(self.X[idx], self.length, self.p)
         x = x.squeeze()
-        return torch.cat([x, torch.tensor(lens)]), self.Y[idx]
+        return torch.cat([x, torch.tensor(lens, device="cuda")]), self.Y[idx]
 
 
 class TrainingData:
